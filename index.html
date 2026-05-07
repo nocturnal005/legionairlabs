@@ -202,6 +202,7 @@
             padding: 2rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             color: #334155;
+            position: relative;
         }
 
         .widget-header {
@@ -260,12 +261,33 @@
             color: #64748b;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .add-btn:hover {
             border-color: var(--accent-gold);
             color: var(--accent-gold);
             background: rgba(212, 162, 76, 0.05);
+        }
+
+        .add-btn.loading {
+            border-color: transparent;
+            color: transparent;
+        }
+
+        .add-btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--accent-gold);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         /* Next Steps */
@@ -350,6 +372,20 @@
             transform: translateY(-2px);
         }
 
+        .footer-logo {
+            max-width: 140px;
+            height: auto;
+            margin: 1rem 0;
+            opacity: 0.8;
+            filter: grayscale(1) brightness(1.5);
+            transition: all 0.3s ease;
+        }
+
+        .footer-logo:hover {
+            opacity: 1;
+            filter: grayscale(0) brightness(1);
+        }
+
         .footer-info {
             color: var(--text-muted);
             font-size: 0.875rem;
@@ -428,74 +464,82 @@
             <!-- 
                 SENDIBLE CLIENT CONNECT WIDGET 
                 Paste the embed code from your Sendible dashboard below.
-                The visual list below is a preview/placeholder and will be replaced by the real widget once active.
+                This area is fully ready for the Sendible script injection.
             -->
-            <div class="widget-header">Client Connect Tool</div>
-            
-            <div class="channel-list">
-                <!-- Facebook -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <div id="sendible-container">
+                <div class="widget-header">Client Connect Tool</div>
+                
+                <div class="channel-list">
+                    <!-- Facebook -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </div>
+                        <span class="channel-name">Facebook Page</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">Facebook Page</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- Instagram -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="url(#ig-grad)"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.066.935 20.397.521 19.608.217c-.765-.297-1.636-.5-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.584-.071 4.85c-.055 1.17-.249 1.805-.415 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.056.36-2.227.413-1.265.057-1.646.07-4.85.07s-3.584-.015-4.85-.071c-1.17-.055-1.805-.249-2.227-.415-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227C2.177 15.584 2.16 15.203 2.16 12s.016-3.585.071-4.85c.055-1.17.249-1.805.415-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.645-1.44-1.44 0-.794.645-1.439 1.44-1.439.794 0 1.44.645 1.44 1.439z"/></svg>
+                    <!-- Instagram -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="url(#ig-grad)"><defs><linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f09433"/><stop offset="25%" style="stop-color:#e6683c"/><stop offset="50%" style="stop-color:#dc2743"/><stop offset="75%" style="stop-color:#cc2366"/><stop offset="100%" style="stop-color:#bc1888"/></linearGradient></defs><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.066.935 20.397.521 19.608.217c-.765-.297-1.636-.5-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.584-.071 4.85c-.055 1.17-.249 1.805-.415 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.056.36-2.227.413-1.265.057-1.646.07-4.85.07s-3.584-.015-4.85-.071c-1.17-.055-1.805-.249-2.227-.415-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227C2.177 15.584 2.16 15.203 2.16 12s.016-3.585.071-4.85c.055-1.17.249-1.805.415-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.645-1.44-1.44 0-.794.645-1.439 1.44-1.439.794 0 1.44.645 1.44 1.439z"/></svg>
+                        </div>
+                        <span class="channel-name">Instagram</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">Instagram</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- TikTok -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-3.3 2.97-5.92 6.27-5.96.15-.01.29-.01.44 0V11c-.93.02-1.85.34-2.61.88-.67.47-1.16 1.19-1.36 1.98-.21.84-.13 1.74.24 2.52.4.82 1.13 1.47 2.01 1.76.5.16 1.03.22 1.56.17 1.04-.08 2.01-.65 2.61-1.52.37-.53.53-1.18.52-1.82-.01-4.44.01-8.88-.01-13.32z"/></svg>
+                    <!-- TikTok -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-3.3 2.97-5.92 6.27-5.96.15-.01.29-.01.44 0V11c-.93.02-1.85.34-2.61.88-.67.47-1.16 1.19-1.36 1.98-.21.84-.13 1.74.24 2.52.4.82 1.13 1.47 2.01 1.76.5.16 1.03.22 1.56.17 1.04-.08 2.01-.65 2.61-1.52.37-.53.53-1.18.52-1.82-.01-4.44.01-8.88-.01-13.32z"/></svg>
+                        </div>
+                        <span class="channel-name">TikTok</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">TikTok</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- YouTube -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <!-- YouTube -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </div>
+                        <span class="channel-name">YouTube</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">YouTube</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- X (Twitter) -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#000000"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153zm-1.292 19.494h2.039L6.486 3.24H4.298l13.311 17.407z"/></svg>
+                    <!-- X (Twitter) -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#000000"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153zm-1.292 19.494h2.039L6.486 3.24H4.298l13.311 17.407z"/></svg>
+                        </div>
+                        <span class="channel-name">X</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">X</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- LinkedIn Company Page -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <!-- LinkedIn Company Page -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </div>
+                        <span class="channel-name">LinkedIn Company Page</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">LinkedIn Company Page</span>
-                    <div class="add-btn">+</div>
-                </div>
 
-                <!-- Google Business -->
-                <div class="channel-row">
-                    <div class="channel-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M21.5 9h-2V7c0-1.1-.9-2-2-2h-11c-1.1 0-2 .9-2 2v2h-2c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h19c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM6.5 7h11v2h-11V7zM18 19c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" fill="#4285F4"/></svg>
+                    <!-- Google Business -->
+                    <div class="channel-row">
+                        <div class="channel-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M21.5 9h-2V7c0-1.1-.9-2-2-2h-11c-1.1 0-2 .9-2 2v2h-2c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h19c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM6.5 7h11v2h-11V7zM18 19c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" fill="#4285F4"/></svg>
+                        </div>
+                        <span class="channel-name">Google Business</span>
+                        <div class="add-btn" onclick="simulateConnect(this)">+</div>
                     </div>
-                    <span class="channel-name">Google Business</span>
-                    <div class="add-btn">+</div>
                 </div>
             </div>
+            
+            <!-- SENDIBLE SCRIPT PLACEHOLDER -->
+            <!-- 
+                When you have your script, you can use:
+                <script type="text/javascript" src="https://app.sendible.com/api/v1/clientconnect.js?id=YOUR_ID"></script>
+            -->
         </section>
 
         <!-- 6. Next steps -->
@@ -517,11 +561,27 @@
                     WhatsApp Us
                 </a>
             </div>
+            
+            <!-- Secondary Logo -->
+            <img src="logo-v6.png" alt="Legionair Labs Secondary" class="footer-logo">
+
             <div class="footer-info">
                 Legionair Labs &middot; legionairlabs.site
             </div>
         </footer>
     </div>
 
+    <script>
+        function simulateConnect(btn) {
+            btn.classList.add('loading');
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.innerHTML = '✓';
+                btn.style.borderColor = '#10b981';
+                btn.style.color = '#10b981';
+                btn.style.pointerEvents = 'none';
+            }, 1500);
+        }
+    </script>
 </body>
 </html>
