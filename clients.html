@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Onboarding | Legionair Labs</title>
+    <!-- SEO & Meta -->
+    <meta name="description" content="Securely connect your social media accounts to Legionair Labs Sendible account.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-navy: #0A1428;
+            --accent-gold: #D4A24C;
+            --accent-silver: #C9D1DC;
+            --text-main: #C9D1DC;
+            --text-muted: #8E9AAF;
+            --card-light: #F8FAFC;
+            --max-width: 760px;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-navy);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Circuit Board Pattern Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h10v10H10zM30 10h5v5h-5zM50 10h10v10H50zM70 10h5v5h-5zM90 10h10v10H90zM10 30h5v5h-5zM30 30h10v10H30zM50 30h5v5h-5zM70 30h10v10H70zM90 30h5v5h-5zM10 50h10v10H10zM30 50h5v5h-5zM50 50h10v10H50zM70 50h5v5h-5zM90 50h10v10H90zM10 70h5v5h-5zM30 70h10v10H30zM50 70h5v5h-5zM70 70h10v10H70zM90 70h5v5h-5zM10 90h10v10H10zM30 90h5v5h-5zM50 90h10v10H50zM70 90h5v5h-5zM90 90h10v10H90z' fill='%23ffffff' fill-opacity='0.03'/%3E%3Cpath d='M15 15h20v2H15zM55 15h20v2H55zM15 35h5v2h-5zM35 35h10v2H35zM75 35h10v2H75zM15 55h20v2H15zM55 55h20v2H55zM15 75h5v2h-5zM35 75h10v2H35zM75 75h10v2H75zM15 95h20v2H15zM55 95h20v2H55z' fill='%23ffffff' fill-opacity='0.02'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 2rem;
+        }
+
+        .logo {
+            max-width: 180px;
+            height: auto;
+            filter: drop-shadow(0 0 15px rgba(212, 162, 76, 0.1));
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-silver) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Trust Card */
+        .trust-card {
+            background: rgba(201, 209, 220, 0.03);
+            border: 1px solid rgba(201, 209, 220, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gold);
+        }
+
+        .shield-icon {
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+        }
+
+        .trust-card h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-silver);
+        }
+
+        .trust-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Instructions */
+        .instructions {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            background: rgba(212, 162, 76, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .step-content p {
+            color: var(--text-main);
+            font-size: 1.05rem;
+        }
+
+        /* Sendible Widget Card */
+        .widget-container {
+            background-color: var(--card-light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            min-height: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            color: #1e293b;
+        }
+
+        .widget-placeholder {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .next-steps h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-silver);
+        }
+
+        .next-steps p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(212, 162, 76, 0.1);
+            border: 1px solid rgba(212, 162, 76, 0.2);
+            color: var(--accent-gold);
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(201, 209, 220, 0.05);
+            padding-top: 4rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--bg-navy);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 162, 76, 0.2);
+            background: #e5b364;
+        }
+
+        .btn-secondary {
+            background: rgba(201, 209, 220, 0.05);
+            border: 1px solid rgba(201, 209, 220, 0.1);
+            color: var(--accent-silver);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(201, 209, 220, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .footer-info {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .container {
+                padding: 3rem 1.25rem;
+                gap: 3rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .trust-card {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. Header -->
+        <header class="fade-in" style="animation-delay: 0.1s;">
+            <img src="logo.png" alt="Legionair Labs" class="logo">
+        </header>
+
+        <!-- 2. Hero -->
+        <section class="hero fade-in" style="animation-delay: 0.2s;">
+            <h1>Connect your <br><span class="gradient-text">social accounts</span></h1>
+            <p>You're a Legionair Labs client — this is where you connect your social media accounts so we can get to work.</p>
+        </section>
+
+        <!-- 3. Trust Card -->
+        <section class="trust-card fade-in" style="animation-delay: 0.3s;">
+            <svg class="shield-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622l-0.382-3.016z"></path>
+            </svg>
+            <div>
+                <h3>No passwords. Ever.</h3>
+                <p>You authenticate directly with each platform. Your login details are never shared with us or stored anywhere on our end.</p>
+            </div>
+        </section>
+
+        <!-- 4. Three-step instructions -->
+        <section class="instructions fade-in" style="animation-delay: 0.4s;">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <p>Click the <strong>+</strong> next to each platform you want us to manage on your behalf</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <p>You'll be taken to that platform's own login screen to approve access</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <p>When asked, enter an email you actively check — this is how platforms will notify you if a reconnection is ever needed</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Sendible Client Connect widget -->
+        <section class="widget-container fade-in" style="animation-delay: 0.5s;">
+            <!-- SENDIBLE CLIENT CONNECT WIDGET — paste embed code from Sendible dashboard here -->
+            <div class="widget-placeholder">
+                <p>Sendible Widget Loading...</p>
+                <p style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.7;">Widget will appear here after deployment and integration.</p>
+            </div>
+        </section>
+
+        <!-- 6. Next steps -->
+        <section class="next-steps fade-in" style="animation-delay: 0.6s;">
+            <h2>What happens next</h2>
+            <p>Once your accounts are connected, we'll be in touch to confirm your setup is live and share your content plan.</p>
+            <div class="badge">Within 48 hours</div>
+        </section>
+
+        <!-- 7. Footer -->
+        <footer class="fade-in" style="animation-delay: 0.7s;">
+            <div class="contact-buttons">
+                <a href="mailto:hello@legionairlabs.site" class="btn btn-secondary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Email Us
+                </a>
+                <a href="https://wa.me/447551611361" target="_blank" class="btn btn-primary">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WhatsApp Us
+                </a>
+            </div>
+            <div class="footer-info">
+                Legionair Labs &middot; legionairlabs.site
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
