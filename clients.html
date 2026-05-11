@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -87,10 +87,78 @@
             padding-bottom: 1rem;
         }
 
-        .logo {
-            max-width: 200px;
+        .hero-video-wrapper {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            width: 100%;
             height: auto;
-            filter: drop-shadow(0 0 15px rgba(212, 162, 76, 0.1));
+            display: block;
+            object-fit: contain;
+            transition: opacity 0.8s ease;
+        }
+
+        /* Multi-layer mask: hard feather on all 4 edges + radial vignette */
+        .hero-video-wrapper::after {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            pointer-events: none;
+            z-index: 1;
+            background:
+                /* Top edge */
+                linear-gradient(to bottom, var(--bg-navy) 0%, transparent 18%),
+                /* Bottom edge */
+                linear-gradient(to top,    var(--bg-navy) 0%, transparent 18%),
+                /* Left edge */
+                linear-gradient(to right,  var(--bg-navy) 0%, transparent 22%),
+                /* Right edge */
+                linear-gradient(to left,   var(--bg-navy) 0%, transparent 22%),
+                /* Corner vignette */
+                radial-gradient(ellipse at center, transparent 40%, var(--bg-navy) 78%);
+        }
+
+        /* Value proposition overlay — typewriter */
+        .video-tagline {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent-silver);
+            white-space: nowrap;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+            transition: opacity 0.8s ease;
+            opacity: 1;
+        }
+
+        .video-tagline .dot {
+            color: var(--accent-gold);
+        }
+
+        /* Blinking cursor */
+        .typewriter-cursor {
+            display: inline-block;
+            width: 1px;
+            height: 1em;
+            background: var(--accent-gold);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* Hero */
@@ -197,11 +265,12 @@
 
         /* Sendible Widget Card */
         .widget-card {
-            background-color: var(--card-light);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            color: #334155;
+            background-color: var(--bg-darker);
+            border: 1px solid rgba(201, 209, 220, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            color: var(--text-main);
             min-height: 200px;
             position: relative;
         }
@@ -210,25 +279,32 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: #1e293b;
+            color: var(--accent-gold);
             font-family: 'Fraunces', serif;
+            text-align: center;
         }
 
-        /* Manual Fallback Styles */
+        /* Manual Fallback Styles - Legionair Dark Theme */
         .channel-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 0.75rem;
         }
 
         .channel-row {
             display: flex;
             align-items: center;
-            padding: 1rem 1.25rem;
-            background: #fff;
-            border: 1px solid #e2e8f0;
+            padding: 0.85rem 1.25rem;
+            background: rgba(201, 209, 220, 0.03);
+            border: 1px solid rgba(201, 209, 220, 0.1);
             border-radius: 12px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .channel-row:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 162, 76, 0.05);
+            transform: translateX(4px);
         }
 
         .channel-icon {
@@ -242,37 +318,82 @@
 
         .channel-name {
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.95rem;
             flex-grow: 1;
-            color: #475569;
+            color: var(--accent-silver);
+            letter-spacing: 0.02em;
         }
 
         .add-btn {
             width: 32px;
             height: 32px;
-            border: 1.5px solid #e2e8f0;
+            border: 1.5px solid rgba(212, 162, 76, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #64748b;
+            color: var(--accent-gold);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             position: relative;
+            background: transparent;
         }
 
-        .add-btn:hover {
+        .channel-row:hover .add-btn {
+            background: var(--accent-gold);
+            color: var(--bg-navy);
             border-color: var(--accent-gold);
-            color: var(--accent-gold);
-            background: rgba(212, 162, 76, 0.05);
+            transform: rotate(90deg);
+        }
+
+        .channel-row:active {
+            transform: scale(0.98);
+        }
+
+        .loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .fallback-notice {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             font-size: 0.85rem;
             color: #64748b;
             font-style: italic;
             text-align: center;
+        }
+
+        #client-connect-widget {
+            min-height: 200px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+            transform: scale(0.98);
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        .fade-in-widget {
+            display: block !important;
+            animation: fadeInWidget 0.6s ease forwards;
+        }
+
+        @keyframes fadeInWidget {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Next Steps */
@@ -409,8 +530,106 @@
     <div class="container">
         <!-- 1. Header -->
         <header class="fade-in" style="animation-delay: 0.1s;">
-            <img src="logo.png" alt="Legionair Labs" class="logo">
+            <div class="hero-video-wrapper">
+                <video
+                    class="hero-video"
+                    id="heroVideo"
+                    autoplay
+                    muted
+                    playsinline
+                    preload="auto"
+                >
+                    <source src="hero-video.mp4" type="video/mp4">
+                </video>
+                <span class="video-tagline" id="taglineText"></span>
+            </div>
         </header>
+
+        <script>
+            const video = document.getElementById('heroVideo');
+            const tagline = document.getElementById('taglineText');
+            const FADE_DURATION = 0.8;
+            const TYPEWRITER_DELAY = 1.5; // seconds before typing starts
+            const CHAR_SPEED = 55; // ms per character
+
+            // The tagline segments: text and dots
+            const segments = [
+                { text: 'SaaS', type: 'text' },
+                { text: ' · ', type: 'dot' },
+                { text: 'Social Media', type: 'text' },
+                { text: ' · ', type: 'dot' },
+                { text: 'Digital Marketing', type: 'text' }
+            ];
+
+            let isFading = false;
+            let typewriterTimeout = null;
+
+            // Build a flat character list with type info
+            function getCharList() {
+                const chars = [];
+                segments.forEach(seg => {
+                    for (const ch of seg.text) {
+                        chars.push({ char: ch, type: seg.type });
+                    }
+                });
+                return chars;
+            }
+
+            function clearTagline() {
+                tagline.innerHTML = '';
+                if (typewriterTimeout) clearTimeout(typewriterTimeout);
+            }
+
+            function startTypewriter() {
+                clearTagline();
+                const chars = getCharList();
+                let i = 0;
+
+                // Add cursor
+                const cursor = document.createElement('span');
+                cursor.className = 'typewriter-cursor';
+                tagline.appendChild(cursor);
+
+                function typeNext() {
+                    if (i >= chars.length) return; // done, cursor keeps blinking
+                    const { char, type } = chars[i];
+                    const span = document.createElement('span');
+                    span.textContent = char;
+                    if (type === 'dot') span.className = 'dot';
+                    // Insert before cursor
+                    tagline.insertBefore(span, cursor);
+                    i++;
+                    typewriterTimeout = setTimeout(typeNext, CHAR_SPEED);
+                }
+
+                typewriterTimeout = setTimeout(typeNext, 50);
+            }
+
+            // Start first typewriter after delay
+            video.addEventListener('loadedmetadata', () => {
+                setTimeout(startTypewriter, TYPEWRITER_DELAY * 1000);
+                checkFade();
+            });
+
+            // Video loop with synced fade
+            function checkFade() {
+                const timeLeft = video.duration - video.currentTime;
+                if (timeLeft <= FADE_DURATION && !isFading) {
+                    isFading = true;
+                    video.style.opacity = '0';
+                    tagline.style.opacity = '0';
+                    setTimeout(() => {
+                        video.currentTime = 0;
+                        video.play();
+                        video.style.opacity = '1';
+                        tagline.style.opacity = '1';
+                        startTypewriter();
+                        isFading = false;
+                    }, FADE_DURATION * 1000);
+                }
+                requestAnimationFrame(checkFade);
+            }
+        </script>
 
         <!-- 2. Hero -->
         <section class="hero fade-in" style="animation-delay: 0.2s;">
@@ -458,70 +677,129 @@
                 <div class="widget-header">Connection Portal</div>
                 <div class="channel-list">
                     <!-- Facebook -->
-                    <div class="channel-row">
+                    <div class="channel-row" data-platform="Facebook" onclick="connectPlatform(this)">
                         <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div>
-                        <span class="channel-name">Facebook Page</span>
-                        <div class="add-btn">+</div>
+                        <span class="channel-name">Facebook</span>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                     <!-- Instagram -->
-                    <div class="channel-row">
-                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#bc1888"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.066.935 20.397.521 19.608.217c-.765-.297-1.636-.5-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.584-.071 4.85c-.055 1.17-.249 1.805-.415 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.056.36-2.227.413-1.265.057-1.646.07-4.85.07s-3.584-.015-4.85-.071c-1.17-.055-1.805-.249-2.227-.415-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227C2.177 15.584 2.16 15.203 2.16 12s.016-3.585.071-4.85c.055-1.17.249-1.805.415-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.645-1.44-1.44 0-.794.645-1.439 1.44-1.439.794 0 1.44.645 1.44 1.439z"/></svg></div>
+                    <div class="channel-row" data-platform="Instagram" onclick="connectPlatform(this)">
+                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.066.935 20.397.521 19.608.217c-.765-.297-1.636-.5-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.584-.071 4.85c-.055 1.17-.249 1.805-.415 2.227-.217.562-.477.96-.896 1.382-.42.419-.819.679-1.381.896-.422.164-1.056.36-2.227.413-1.265.057-1.646.07-4.85.07s-3.584-.015-4.85-.071c-1.17-.055-1.805-.249-2.227-.415-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.819-.896-1.381-.164-.422-.36-1.057-.413-2.227C2.177 15.584 2.16 15.203 2.16 12s.016-3.585.071-4.85c.055-1.17.249-1.805.415-2.227.217-.562.477-.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057-.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.645-1.44-1.44 0-.794.645-1.439 1.44-1.439.794 0 1.44.645 1.44 1.439z"/></svg></div>
                         <span class="channel-name">Instagram</span>
-                        <div class="add-btn">+</div>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                     <!-- TikTok -->
-                    <div class="channel-row">
+                    <div class="channel-row" data-platform="TikTok" onclick="connectPlatform(this)">
                         <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-3.3 2.97-5.92 6.27-5.96.15-.01.29-.01.44 0V11c-.93.02-1.85.34-2.61.88-.67.47-1.16 1.19-1.36 1.98-.21.84-.13 1.74.24 2.52.4.82 1.13 1.47 2.01 1.76.5.16 1.03.22 1.56.17 1.04-.08 2.01-.65 2.61-1.52.37-.53.53-1.18.52-1.82-.01-4.44.01-8.88-.01-13.32z"/></svg></div>
                         <span class="channel-name">TikTok</span>
-                        <div class="add-btn">+</div>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                    <!-- Threads -->
+                    <div class="channel-row" data-platform="Threads" onclick="connectPlatform(this)">
+                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/></svg></div>
+                        <span class="channel-name">Threads</span>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                     <!-- YouTube -->
-                    <div class="channel-row">
+                    <div class="channel-row" data-platform="YouTube" onclick="connectPlatform(this)">
                         <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
                         <span class="channel-name">YouTube</span>
-                        <div class="add-btn">+</div>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
-                    <!-- X -->
-                    <div class="channel-row">
-                        <div class="channel-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="#000000"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153zm-1.292 19.494h2.039L6.486 3.24H4.298l13.311 17.407z"/></svg></div>
-                        <span class="channel-name">X</span>
-                        <div class="add-btn">+</div>
+                    <!-- X (Twitter) -->
+                    <div class="channel-row" data-platform="X (Twitter)" onclick="connectPlatform(this)">
+                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg></div>
+                        <span class="channel-name">X (Twitter)</span>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                     <!-- LinkedIn -->
-                    <div class="channel-row">
-                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
-                        <span class="channel-name">LinkedIn Page</span>
-                        <div class="add-btn">+</div>
+                    <div class="channel-row" data-platform="LinkedIn" onclick="connectPlatform(this)">
+                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="#0077B5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+                        <span class="channel-name">LinkedIn</span>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
-                    <!-- Google Business -->
-                    <div class="channel-row">
-                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M21.5 9h-2V7c0-1.1-.9-2-2-2h-11c-1.1 0-2 .9-2 2v2h-2c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h19c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM6.5 7h11v2h-11V7zM18 19c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm-3 3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1zm0-3c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" fill="#4285F4"/></svg></div>
-                        <span class="channel-name">Google Business</span>
-                        <div class="add-btn">+</div>
+                    <!-- Bluesky -->
+                    <div class="channel-row" data-platform="Bluesky" onclick="connectPlatform(this)">
+                        <div class="channel-icon"><svg width="24" height="24" viewBox="0 0 16 16" fill="#0085FF"><path d="M3.468 1.948C5.303 3.325 7.276 6.118 8 7.616c.725-1.498 2.698-4.29 4.532-5.668C13.855.955 16 .186 16 2.632c0 .489-.28 4.105-.444 4.692-.572 2.04-2.653 2.561-4.504 2.246 3.236.551 4.06 2.375 2.281 4.2-3.376 3.464-4.852-.87-5.23-1.98-.07-.204-.103-.3-.103-.218 0-.081-.033.014-.102.218-.379 1.11-1.855 5.444-5.231 1.98-1.778-1.825-.955-3.65 2.28-4.2-1.85.315-3.932-.205-4.503-2.246C.28 6.737 0 3.12 0 2.632 0 .186 2.145.955 3.468 1.948"/></svg></div>
+                        <span class="channel-name">Bluesky</span>
+                        <div class="add-btn">
+                            <span class="plus">+</span>
+                            <div class="loading-spinner"></div>
+                        </div>
                     </div>
                 </div>
-                <p class="fallback-notice">Waiting for secure connection portal...</p>
+                <p class="fallback-notice" style="color: var(--text-muted); opacity: 0.5;">Secure connection portal initializing...</p>
             </div>
 
-            <!-- Sendible Widget Container -->
-            <div id="client-connect-widget"></div>
-
+            <!-- Direct Connection Script -->
             <script> 
-                !function(){
-                    var e=document,t=e.createElement("iframe");
-                    window.addEventListener("message",function(e){
-                        if(!e || !e.data || !e.data.height){return;}
-                        t.height=(parseInt(e.data.height, 10)+45)+"px"
-                        if(parseInt(e.data.height) > 50) {
-                            document.getElementById('manual-fallback').style.display = 'none';
-                        }
-                    },!1),
-                    t.style.border="0",
-                    t.style.width="100%",
-                    t.id="client-connect-iframe",
-                    t.src="https://api.sendible.com/api/v2/client_connect_widget.json?id=3475",
-                    e.getElementById("client-connect-widget").appendChild(t)
-                }();
+
+                function connectPlatform(row) {
+                    const platform = row.getAttribute('data-platform');
+                    const btn = row.querySelector('.add-btn');
+                    const plus = btn.querySelector('.plus');
+                    const spinner = btn.querySelector('.loading-spinner');
+                    
+                    // Show loading feedback
+                    plus.style.display = 'none';
+                    spinner.style.display = 'block';
+                    row.style.background = 'rgba(212, 162, 76, 0.1)';
+
+                    const serviceMap = {
+                        'Facebook': 'facebook_page',
+                        'Instagram': 'instagram_business',
+                        'TikTok': 'tiktok',
+                        'YouTube': 'google_youtube',
+                        'X (Twitter)': 'twitter',
+                        'LinkedIn': 'linkedin_profile',
+                        'Threads': 'threads',
+                        'Bluesky': 'bluesky'
+                    };
+
+                    const serviceKey = serviceMap[platform] || platform.toLowerCase();
+                    
+                    // THE FIX: Using the exact Public Widget URL from your snippet
+                    // This tells Sendible it's a public request and skips the admin login box
+                    const directUrl = `https://api.sendible.com/api/v2/client_connect_widget.json?id=3475&service=${serviceKey}`;
+
+                    // Professional Popup Handshake (Matching your screenshots)
+                    const width = 600;
+                    const height = 750;
+                    const left = (window.innerWidth / 2) - (width / 2);
+                    const top = (window.innerHeight / 2) - (height / 2);
+                    
+                    window.open(directUrl, 'SendibleConnect', 
+                        `width=${width},height=${height},left=${left},top=${top},status=no,menubar=no,toolbar=no`
+                    );
+
+                    // Reset button state after a moment
+                    setTimeout(() => {
+                        plus.style.display = 'block';
+                        spinner.style.display = 'none';
+                        row.style.background = '';
+                    }, 3000);
+                }
             </script>
         </section>
 
