@@ -154,6 +154,15 @@
             opacity: 1;
         }
 
+        .video-tagline .char-shimmer {
+            animation: shimmer-in 0.4s ease-out forwards;
+        }
+
+        @keyframes shimmer-in {
+            0% { color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold); }
+            100% { color: inherit; text-shadow: none; }
+        }
+
         .video-tagline .dot {
             color: var(--accent-gold);
         }
@@ -161,11 +170,12 @@
         /* Blinking cursor */
         .typewriter-cursor {
             display: inline-block;
-            width: 1px;
-            height: 1em;
+            width: 2px;
+            height: 1.1em;
             background: var(--accent-gold);
-            margin-left: 2px;
+            margin-left: 3px;
             vertical-align: text-bottom;
+            box-shadow: 0 0 6px rgba(212, 162, 76, 0.8);
             animation: blink 0.7s step-end infinite;
         }
 
@@ -564,13 +574,14 @@
             const FADE_DURATION = 0.8;
             const TYPEWRITER_DELAY = 1.5; // seconds before typing starts
             const CHAR_SPEED = 55; // ms per character
+            const SEGMENT_PAUSE = 400; // ms pause after a dot
 
             // The tagline segments: text and dots
             const segments = [
                 { text: 'SaaS', type: 'text' },
-                { text: ' · ', type: 'dot' },
+                { text: ' · ', type: 'dot', pause: true },
                 { text: 'Social Media', type: 'text' },
-                { text: ' · ', type: 'dot' },
+                { text: ' · ', type: 'dot', pause: true },
                 { text: 'Digital Marketing', type: 'text' }
             ];
 
@@ -581,8 +592,11 @@
             function getCharList() {
                 const chars = [];
                 segments.forEach(seg => {
-                    for (const ch of seg.text) {
-                        chars.push({ char: ch, type: seg.type });
+                    for (let j = 0; j < seg.text.length; j++) {
+                        const ch = seg.text[j];
+                        // If it's the last char of a pause segment, flag it for delay
+                        const isLastInPauseSegment = seg.pause && j === seg.text.length - 1;
+                        chars.push({ char: ch, type: seg.type, pause: isLastInPauseSegment });
                     }
                 });
                 return chars;
@@ -605,14 +619,20 @@
 
                 function typeNext() {
                     if (i >= chars.length) return; // done, cursor keeps blinking
-                    const { char, type } = chars[i];
+                    const { char, type, pause } = chars[i];
                     const span = document.createElement('span');
                     span.textContent = char;
-                    if (type === 'dot') span.className = 'dot';
+                    if (type === 'dot') {
+                        span.className = 'dot char-shimmer';
+                    } else if (char !== ' ') {
+                        span.className = 'char-shimmer';
+                    }
                     // Insert before cursor
                     tagline.insertBefore(span, cursor);
                     i++;
-                    typewriterTimeout = setTimeout(typeNext, CHAR_SPEED);
+                    
+                    const nextDelay = pause ? SEGMENT_PAUSE : CHAR_SPEED;
+                    typewriterTimeout = setTimeout(typeNext, nextDelay);
                 }
 
                 typewriterTimeout = setTimeout(typeNext, 50);
